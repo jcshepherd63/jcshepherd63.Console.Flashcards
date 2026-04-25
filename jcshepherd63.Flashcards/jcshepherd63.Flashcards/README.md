@@ -5,7 +5,7 @@ INITIAL LOCAL SETUP:
 Please run the following local commands to setup the db on your local.
 
 sqllocaldb create FlashcardAppLocalDb
-dotnet ef database update
+Run Table Creation Script.sql file on the FlashcardAppLocalDb
 
 Features:
 
