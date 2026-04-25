@@ -1,5 +1,12 @@
 # Flashcard Application
 
+INITIAL LOCAL SETUP:
+
+Please run the following local commands to setup the db on your local.
+
+sqllocaldb create FlashcardAppLocalDb
+dotnet ef database update
+
 Features:
 
 SQL Server Database with the connection string stored in an appsettings.json file
