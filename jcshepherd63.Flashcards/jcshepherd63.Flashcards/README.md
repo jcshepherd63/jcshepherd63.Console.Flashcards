@@ -4,8 +4,8 @@ INITIAL LOCAL SETUP:
 
 Please run the following local commands to setup the db on your local.
 
-sqllocaldb create FlashcardAppLocalDb
-Run Table Creation Script.sql file on the FlashcardAppLocalDb
+1. sqllocaldb create FlashcardAppLocalDb
+2. Run Table Creation Script.sql file on the FlashcardAppLocalDb
 
 Features:
 
