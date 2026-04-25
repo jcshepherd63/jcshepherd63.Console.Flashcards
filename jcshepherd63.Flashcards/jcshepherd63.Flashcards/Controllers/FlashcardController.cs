@@ -1,5 +1,7 @@
 ﻿using DTOs;
 using FlashcardMethods;
+using Menus;
+using Microsoft.Identity.Client;
 using Spectre.Console;
 using StackMethods;
 
@@ -30,11 +32,20 @@ public class FlashcardController
     {
         Console.Clear();
         List<FlashcardStackDTO> choices = StackService.GetStacks();
-        var selection = AnsiConsole.Prompt<FlashcardStackDTO>(
-            new SelectionPrompt<FlashcardStackDTO>()
-            .Title("[yellow bold]Which stack does this flashcard belong to?[/]")
-            .AddChoices(choices));
-
+        FlashcardStackDTO selection = null;
+        try
+        {
+                selection = AnsiConsole.Prompt<FlashcardStackDTO>(
+                new SelectionPrompt<FlashcardStackDTO>()
+                .Title("[yellow bold]Which stack does this flashcard belong to?[/]")
+                .AddChoices(choices));
+        }catch(Exception e)
+        {
+            Console.WriteLine("There are no flashcard stacks to add this flashcard to currently. Press any key to return to the main menu.");
+            Console.ReadLine();
+            Console.Clear();
+            MainMenu.MainMenuRouter();
+        }
 
         return selection.ToString();
     }

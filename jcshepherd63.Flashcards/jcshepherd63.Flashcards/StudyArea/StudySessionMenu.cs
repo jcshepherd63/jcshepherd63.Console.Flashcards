@@ -24,11 +24,30 @@ internal class StudySessionMenu
     {
         Console.Clear();
         List<FlashcardStackDTO> choices = StackService.GetStacks();
-        var selection = AnsiConsole.Prompt<FlashcardStackDTO>(
-            new SelectionPrompt<FlashcardStackDTO>()
-            .Title("[yellow bold]Which stack would you like to study?[/]")
-            .AddChoices(choices));
+        FlashcardStackDTO selection = null;
+        try
+        {
+            if (choices == null || !choices.Any())
+            {
+                Console.WriteLine("There are no flashcard stacks to study currently. Press any key to return to the main menu.");
+                Console.ReadLine();
+                Console.Clear();
+                MainMenu.MainMenuRouter();
+                return null;
+            }
 
+            selection = AnsiConsole.Prompt<FlashcardStackDTO>(
+                new SelectionPrompt<FlashcardStackDTO>()
+                .Title("[yellow bold]Which stack would you like to study?[/]")
+                .AddChoices(choices));
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine("An error occurred while selecting a stack. Returning to the main menu.");
+            Console.ReadLine();
+            Console.Clear();
+            MainMenu.MainMenuRouter();
+        }
 
         return selection;
     }
@@ -41,7 +60,14 @@ internal class StudySessionMenu
         {
             case "Study a stack of flashcards":
                 {
-                    var stackName = GetStackToStudy().ToString();
+                    var stack = GetStackToStudy();
+                    if (stack == null)
+                    {
+                        Console.WriteLine("No stack selected. Returning to the main menu.");
+                        ReturnToMainMenu();
+                        return;
+                    }
+                    var stackName = stack.ToString();
                     var stackId = StudyAreaService.GetStackId(stackName);
                     (int totalCount,int count) = StudySessionController.DisplayFlashcards(stackName);
                     var session = StudySessionController.ObjectCreation(totalCount, count, stackId);
